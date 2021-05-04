@@ -48,7 +48,7 @@ public class WeatherService {
         private static final int evictionPeriod = 30 * 60 * 1000; //30 min
 
         private String localCurrentTemperature = null;
-        private long lastCall = -1;
+        private volatile long lastCall = -1;
 
         public String getValue() {
             if (lastCall == -1) {
