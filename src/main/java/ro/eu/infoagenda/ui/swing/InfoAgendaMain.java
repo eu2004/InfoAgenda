@@ -53,21 +53,21 @@ public class InfoAgendaMain {
     }
 
     private void refreshUI(JLabel timeInfoLabel, JLabel dateInfoLabel, JLabel weatherCurrentOutsideTempInfoLabel) {
+        refreshDateTimeLabels(timeInfoLabel, dateInfoLabel);
+
         final Timer timer = new Timer(1000, event -> {
-            if (weatherCurrentOutsideTempInfoLabel.getText().isEmpty()) {
-                new Thread(()-> loadWeatherInfo(weatherCurrentOutsideTempInfoLabel)).start();
-            }else {
-                loadWeatherInfo(weatherCurrentOutsideTempInfoLabel);
-            }
-
-            dateInfoLabel.setText(dateInfoService.getCurrentDate().getInfo().getContent());
-
-            timeInfoLabel.setText(timeInfoService.getCurrentTime().getInfo().getContent());
+            refreshDateTimeLabels(timeInfoLabel, dateInfoLabel);
+            loadWeatherInfo(weatherCurrentOutsideTempInfoLabel);
         });
         timer.setRepeats(true);
         timer.setCoalesce(true);
-        timer.setInitialDelay(0);
+        timer.setInitialDelay(1000);
         timer.start();
+    }
+
+    private void refreshDateTimeLabels(JLabel timeInfoLabel, JLabel dateInfoLabel) {
+        dateInfoLabel.setText(dateInfoService.getCurrentDate().getInfo().getContent());
+        timeInfoLabel.setText(timeInfoService.getCurrentTime().getInfo().getContent());
     }
 
     private void loadWeatherInfo(JLabel weatherCurrentOutsideTempInfoLabel) {
@@ -107,17 +107,17 @@ public class InfoAgendaMain {
         private void build() {
             timeInfoLabel = new JLabel("");
             timeInfoLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-            timeInfoLabel.setFont(new Font(timeInfoLabel.getName(), Font.PLAIN, 100));
+            timeInfoLabel.setFont(new Font(timeInfoLabel.getName(), Font.PLAIN, 150));
             timeInfoLabel.setForeground(Color.GREEN);
 
             dateInfoLabel = new JLabel("");
             dateInfoLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-            dateInfoLabel.setFont(new Font(timeInfoLabel.getName(), Font.PLAIN, 40));
+            dateInfoLabel.setFont(new Font(timeInfoLabel.getName(), Font.PLAIN, 60));
             dateInfoLabel.setForeground(Color.GREEN);
 
             weatherCurrentOutsideTempInfoLabel = new JLabel("");
             weatherCurrentOutsideTempInfoLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-            weatherCurrentOutsideTempInfoLabel.setFont(new Font(timeInfoLabel.getName(), Font.PLAIN, 40));
+            weatherCurrentOutsideTempInfoLabel.setFont(new Font(timeInfoLabel.getName(), Font.PLAIN, 60));
             weatherCurrentOutsideTempInfoLabel.setForeground(Color.GREEN);
 
             labelsPanel = new JPanel();
