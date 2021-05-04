@@ -54,11 +54,13 @@ public class InfoAgendaMain {
 
     private void refreshUI(JLabel timeInfoLabel, JLabel dateInfoLabel, JLabel weatherCurrentOutsideTempInfoLabel) {
         final Timer timer = new Timer(1000, event -> {
-            try {
-                weatherCurrentOutsideTempInfoLabel.setText(weatherService.getOutsideCurrentTemperature().getInfo().getContent() + " Outside");
-            } catch (IOException e) {
-                logger.error(e);
-            }
+            new Thread(()->{
+                try {
+                    weatherCurrentOutsideTempInfoLabel.setText(weatherService.getOutsideCurrentTemperature().getInfo().getContent() + " Outside");
+                } catch (IOException e) {
+                    logger.error(e);
+                }
+            }).start();
 
             dateInfoLabel.setText(dateInfoService.getCurrentDate().getInfo().getContent());
 
