@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Info<T> {
-    private InfoContent info;
-    private Map<String, String> meta = new HashMap<>();
+    private final InfoContent<T> info;
+    private final Map<String, String> meta = new HashMap<>();
 
     public Info(InfoContent<T> info) {
         this.info = info;

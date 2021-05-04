@@ -9,10 +9,8 @@ import ro.eu.infoagenda.model.InfoContent;
 import java.io.IOException;
 
 public class WeatherService {
-    private LocalCurrentTemperatureCash localCurrentTemperature = new LocalCurrentTemperatureCash();
-    private String getCurrentLocationAccuweatherURL() {
-        return "https://www.accuweather.com/ro/ro/bucharest/287430/current-weather/287430";
-    }
+    private static final String CURRENT_LOCATION_ACCUWEATHER_URL = "https://www.accuweather.com/ro/ro/bucharest/287430/current-weather/287430";
+    private final LocalCurrentTemperatureCash localCurrentTemperature = new LocalCurrentTemperatureCash();
 
     public Info<String> getOutsideCurrentTemperature() throws IOException {
         InfoContent<String> infoContent = new InfoContent<>();
@@ -23,7 +21,7 @@ public class WeatherService {
 
     private String getLocalOutsideCurrentTemperature() throws IOException {
         if (localCurrentTemperature.getValue() == null) {
-            Document doc = Jsoup.connect(getCurrentLocationAccuweatherURL()).get();
+            Document doc = Jsoup.connect(CURRENT_LOCATION_ACCUWEATHER_URL).get();
             Element root = doc.select("div.two-column-page-content")
                     .select("div.page-column-1")
                     .select("div.content-module")
@@ -39,8 +37,8 @@ public class WeatherService {
         return localCurrentTemperature.getValue();
     }
 
-    private class LocalCurrentTemperatureCash {
-        private final int evictionPeriod = 30 * 60 * 1000; //30 min
+    private static class LocalCurrentTemperatureCash {
+        private static final int evictionPeriod = 30 * 60 * 1000; //30 min
 
         private String localCurrentTemperature = null;
         private long lastCall = -1;
