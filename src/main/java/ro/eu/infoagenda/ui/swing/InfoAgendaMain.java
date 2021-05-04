@@ -36,14 +36,14 @@ public class InfoAgendaMain {
         frame.pack();
         frame.setVisible(true);
 
-        new Thread(() -> refreshUI(labelsPanel.getTimeInfoLabel(), labelsPanel.getDateInfoLabel(), labelsPanel.getWeatherCurrentOutsideTempInfoLabel())).start();
+        refreshUI(labelsPanel.getTimeInfoLabel(), labelsPanel.getDateInfoLabel(), labelsPanel.getWeatherCurrentOutsideTempInfoLabel());
     }
 
     private JFrame createFrame() {
         final JFrame frame = new JFrame("Info agenda");
 
         // set frame site
-        frame.setMinimumSize(new Dimension(1024, 768));
+        frame.setMinimumSize(new Dimension(800, 600));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
 
@@ -118,7 +118,7 @@ public class InfoAgendaMain {
             labelsPanel.add(timeInfoLabel);
             labelsPanel.add(dateInfoLabel);
             labelsPanel.add(weatherCurrentOutsideTempInfoLabel);
-            labelsPanel.setBorder(new EmptyBorder(290, 400, 0, 0));
+            labelsPanel.setBorder(new EmptyBorder(100, 100, 0, 0));
         }
     }
 }
