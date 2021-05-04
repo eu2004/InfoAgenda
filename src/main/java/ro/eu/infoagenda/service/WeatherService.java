@@ -1,5 +1,7 @@
 package ro.eu.infoagenda.service;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -9,6 +11,7 @@ import ro.eu.infoagenda.model.InfoContent;
 import java.io.IOException;
 
 public class WeatherService {
+    private static final Logger logger = LogManager.getLogger(WeatherService.class);
     private static final String CURRENT_LOCATION_ACCUWEATHER_URL = "https://www.accuweather.com/ro/ro/bucharest/287430/current-weather/287430";
     private final LocalCurrentTemperatureCash localCurrentTemperature = new LocalCurrentTemperatureCash();
 
@@ -31,7 +34,7 @@ public class WeatherService {
                     .select("div.display-temp")
                     .first();
             localCurrentTemperature.setValue(root.text());
-            System.out.println("get localCurrentTemperature " + root.text());
+            logger.info("get localCurrentTemperature " + root.text());
         }
 
         return localCurrentTemperature.getValue();
@@ -46,7 +49,7 @@ public class WeatherService {
         public String getValue() {
             long timeSinceLastCall = System.currentTimeMillis() - lastCall;
             if (evictionPeriod <= timeSinceLastCall) {
-                System.out.println("evictionPeriod:" + evictionPeriod + " <= timeSinceLastCall:" + timeSinceLastCall);
+                logger.info("evictionPeriod:" + evictionPeriod + " <= timeSinceLastCall:" + timeSinceLastCall);
                 localCurrentTemperature = null;
             }
             return localCurrentTemperature;

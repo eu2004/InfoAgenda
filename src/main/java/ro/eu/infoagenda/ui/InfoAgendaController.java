@@ -6,6 +6,8 @@ import javafx.animation.Timeline;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ro.eu.infoagenda.service.DateInfoService;
 import ro.eu.infoagenda.service.TimeInfoService;
 import ro.eu.infoagenda.service.WeatherService;
@@ -15,6 +17,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class InfoAgendaController implements Initializable {
+    private static final Logger logger = LogManager.getLogger(InfoAgendaController.class);
+
     private final TimeInfoService timeInfoService = new TimeInfoService();
     private final DateInfoService dateInfoService = new DateInfoService();
     private final WeatherService weatherService = new WeatherService();
@@ -33,7 +37,7 @@ public class InfoAgendaController implements Initializable {
         try {
             weatherCurrentOutsideTempInfoLabel.setText(weatherService.getOutsideCurrentTemperature().getInfo().getContent() + " Outside");
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
 
         dateInfoLabel.setText(dateInfoService.getCurrentDate().getInfo().getContent());
