@@ -24,17 +24,21 @@ public class WeatherService {
 
     private String getLocalOutsideCurrentTemperature() throws IOException {
         if (localCurrentTemperature.getValue() == null) {
-            Document doc = Jsoup.connect(CURRENT_LOCATION_ACCUWEATHER_URL).get();
-            Element root = doc.select("div.two-column-page-content")
-                    .select("div.page-column-1")
-                    .select("div.content-module")
-                    .select("div.current-weather-card.card-module.content-module.non-ad")
-                    .select("div.card-content")
-                    .select("div.temp")
-                    .select("div.display-temp")
-                    .first();
-            localCurrentTemperature.setValue(root.text());
-            logger.info("get localCurrentTemperature " + root.text());
+            synchronized (localCurrentTemperature) {
+                if (localCurrentTemperature.getValue() == null) {
+                    Document doc = Jsoup.connect(CURRENT_LOCATION_ACCUWEATHER_URL).get();
+                    Element root = doc.select("div.two-column-page-content")
+                            .select("div.page-column-1")
+                            .select("div.content-module")
+                            .select("div.current-weather-card.card-module.content-module.non-ad")
+                            .select("div.card-content")
+                            .select("div.temp")
+                            .select("div.display-temp")
+                            .first();
+                    localCurrentTemperature.setValue(root.text());
+                    logger.info("set localCurrentTemperature " + root.text());
+                }
+            }
         }
 
         return localCurrentTemperature.getValue();
@@ -47,9 +51,16 @@ public class WeatherService {
         private long lastCall = -1;
 
         public String getValue() {
+            if (lastCall == -1) {
+                return localCurrentTemperature;
+            }
+
             long timeSinceLastCall = System.currentTimeMillis() - lastCall;
             if (evictionPeriod <= timeSinceLastCall) {
-                logger.info("evictionPeriod:" + evictionPeriod + " <= timeSinceLastCall:" + timeSinceLastCall);
+                logger.info("localCurrentTemperature has expired! EvictionPeriod:"
+                        + evictionPeriod
+                        + " <= timeSinceLastCall:"
+                        + timeSinceLastCall);
                 localCurrentTemperature = null;
             }
             return localCurrentTemperature;
