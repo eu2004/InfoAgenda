@@ -4,6 +4,7 @@ module infoagenda {
     requires javafx.graphics;
     requires javafx.fxml;
     requires org.apache.logging.log4j;
+    requires java.desktop;
 
     opens ro.eu.infoagenda.ui;
 }
