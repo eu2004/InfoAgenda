@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 
 public class DateInfoService {
 
-    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy MM dd, EEEE");
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy MMM dd, EEEE");
 
     public Info<String> getCurrentDate() {
         LocalDate localDate = LocalDate.now();
