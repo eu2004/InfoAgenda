@@ -60,7 +60,6 @@ public class InfoAgendaMain {
                 loadWeatherInfo(weatherCurrentOutsideTempInfoLabel);
             }
 
-
             dateInfoLabel.setText(dateInfoService.getCurrentDate().getInfo().getContent());
 
             timeInfoLabel.setText(timeInfoService.getCurrentTime().getInfo().getContent());
