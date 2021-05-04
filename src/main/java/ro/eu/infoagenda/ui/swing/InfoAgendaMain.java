@@ -54,13 +54,12 @@ public class InfoAgendaMain {
 
     private void refreshUI(JLabel timeInfoLabel, JLabel dateInfoLabel, JLabel weatherCurrentOutsideTempInfoLabel) {
         final Timer timer = new Timer(1000, event -> {
-            new Thread(()->{
-                try {
-                    weatherCurrentOutsideTempInfoLabel.setText(weatherService.getOutsideCurrentTemperature().getInfo().getContent() + " Outside");
-                } catch (IOException e) {
-                    logger.error(e);
-                }
-            }).start();
+            if (weatherCurrentOutsideTempInfoLabel.getText().isEmpty()) {
+                new Thread(()-> loadWeatherInfo(weatherCurrentOutsideTempInfoLabel)).start();
+            }else {
+                loadWeatherInfo(weatherCurrentOutsideTempInfoLabel);
+            }
+
 
             dateInfoLabel.setText(dateInfoService.getCurrentDate().getInfo().getContent());
 
@@ -70,6 +69,14 @@ public class InfoAgendaMain {
         timer.setCoalesce(true);
         timer.setInitialDelay(0);
         timer.start();
+    }
+
+    private void loadWeatherInfo(JLabel weatherCurrentOutsideTempInfoLabel) {
+        try {
+            weatherCurrentOutsideTempInfoLabel.setText(weatherService.getOutsideCurrentTemperature().getInfo().getContent() + " Outside");
+        } catch (IOException e) {
+            logger.error(e);
+        }
     }
 
     private static class LabelsPanel {
