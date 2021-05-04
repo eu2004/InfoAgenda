@@ -1,8 +1,11 @@
 package ro.eu.infoagenda.ui;
 
-import javafx.animation.AnimationTimer;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.util.Duration;
 import ro.eu.infoagenda.service.DateInfoService;
 import ro.eu.infoagenda.service.TimeInfoService;
 import ro.eu.infoagenda.service.WeatherService;
@@ -21,41 +24,20 @@ public class InfoAgendaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        PaintService paintService = new PaintService();
-        paintService.start();
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> refreshInfo()));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
     }
 
-    private class PaintService extends AnimationTimer {
-        private static final long ONE_SECOND_NANOS = 1_000_000_000L;
-        private long nextSecond = 0L;
-
-        @Override
-        public void start() {
-            nextSecond = 0L;
-            super.start();
+    private void refreshInfo() {
+        try {
+            weatherCurrentOutsideTempInfoLabel.setText(weatherService.getOutsideCurrentTemperature().getInfo().getContent() + " Outside");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        @Override
-        public void handle(long nanoseconds) {
-            if (nanoseconds < nextSecond) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return;
-            }
 
-            nextSecond = nanoseconds + ONE_SECOND_NANOS;
+        dateInfoLabel.setText(dateInfoService.getCurrentDate().getInfo().getContent());
 
-            try {
-                weatherCurrentOutsideTempInfoLabel.setText(weatherService.getOutsideCurrentTemperature().getInfo().getContent() + " Outside");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            dateInfoLabel.setText(dateInfoService.getCurrentDate().getInfo().getContent());
-
-            timeInfoLabel.setText(timeInfoService.getCurrentTime().getInfo().getContent());
-        }
+        timeInfoLabel.setText(timeInfoService.getCurrentTime().getInfo().getContent());
     }
 }
