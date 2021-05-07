@@ -13,7 +13,7 @@ import java.io.IOException;
 public class WeatherService {
     private static final Logger logger = LogManager.getLogger(WeatherService.class);
     private static final String CURRENT_LOCATION_ACCUWEATHER_URL = "https://www.accuweather.com/ro/ro/bucharest/287430/current-weather/287430";
-    private final LocalCurrentTemperatureCash localCurrentTemperature = new LocalCurrentTemperatureCash();
+    private volatile LocalCurrentTemperatureCash localCurrentTemperature = new LocalCurrentTemperatureCash();
 
     public Info<String> getOutsideCurrentTemperature() throws IOException {
         InfoContent<String> infoContent = new InfoContent<>();
