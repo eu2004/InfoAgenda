@@ -70,8 +70,8 @@ class InfoAgendaController {
     }
 
     private void refreshDateTimeLabels(JLabel timeInfoLabel, JLabel dateInfoLabel) {
-        dateInfoLabel.setText(dateInfoService.getCurrentDate().getInfo().getContent());
         timeInfoLabel.setText(timeInfoService.getCurrentTime().getInfo().getContent());
+        dateInfoLabel.setText(dateInfoService.getCurrentDate().getInfo().getContent());
     }
 
     private void loadWeatherInfo(JLabel weatherCurrentOutsideTempInfoLabel) {
@@ -125,6 +125,14 @@ class InfoAgendaController {
         }
 
         public void updateLabelTextColor() {
+            final Color nextColor = getNextLabelTextColor();
+
+            timeInfoLabel.setForeground(nextColor);
+            dateInfoLabel.setForeground(nextColor);
+            weatherCurrentOutsideTempInfoLabel.setForeground(nextColor);
+        }
+
+        private Color getNextLabelTextColor() {
             TEXT_COLOR[] textColors = TEXT_COLOR.values();
             int currentTextColor = 0;
             for (; currentTextColor < textColors.length; currentTextColor++) {
@@ -137,9 +145,7 @@ class InfoAgendaController {
                     break;
                 }
             }
-            timeInfoLabel.setForeground(textColors[currentTextColor].color);
-            dateInfoLabel.setForeground(textColors[currentTextColor].color);
-            weatherCurrentOutsideTempInfoLabel.setForeground(textColors[currentTextColor].color);
+            return textColors[currentTextColor].color;
         }
 
         private void build() {
