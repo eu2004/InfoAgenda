@@ -13,7 +13,7 @@ import java.io.IOException;
 public class WeatherService {
     private static final Logger logger = LogManager.getLogger(WeatherService.class);
     private static final String CURRENT_LOCATION_ACCUWEATHER_URL = "https://www.accuweather.com/ro/ro/bucharest/287430/current-weather/287430";
-    private volatile LocalCurrentTemperatureCash localCurrentTemperature = new LocalCurrentTemperatureCash();
+    private final LocalCash<String> localCurrentTemperature = new LocalCash<>(30 * 60 * 1000);
 
     public Info<String> getOutsideCurrentTemperature() throws IOException {
         InfoContent<String> infoContent = new InfoContent<>();
@@ -42,33 +42,5 @@ public class WeatherService {
         }
 
         return localCurrentTemperature.getValue();
-    }
-
-    private static class LocalCurrentTemperatureCash {
-        private static final int evictionPeriod = 30 * 60 * 1000; //30 min
-
-        private String localCurrentTemperature = null;
-        private volatile long lastCall = -1;
-
-        public String getValue() {
-            if (lastCall == -1) {
-                return localCurrentTemperature;
-            }
-
-            long timeSinceLastCall = System.currentTimeMillis() - lastCall;
-            if (evictionPeriod <= timeSinceLastCall) {
-                logger.info("localCurrentTemperature has expired! EvictionPeriod:"
-                        + evictionPeriod
-                        + " <= timeSinceLastCall:"
-                        + timeSinceLastCall);
-                localCurrentTemperature = null;
-            }
-            return localCurrentTemperature;
-        }
-
-        public void setValue(String value) {
-            lastCall = System.currentTimeMillis();
-            localCurrentTemperature = value;
-        }
     }
 }

@@ -70,13 +70,13 @@ class InfoAgendaController {
         return frame;
     }
 
-    private void refreshUI(JLabel timeInfoLabel, JLabel dateInfoLabel, JLabel weatherCurrentOutsideTempInfoLabel, JLabel newsfeederInfoLabel) {
+    private void refreshUI(JLabel timeInfoLabel, JLabel dateInfoLabel, JLabel weatherCurrentOutsideTempInfoLabel, JLabel newsFeederInfoLabel) {
         refreshDateTimeInfo(timeInfoLabel, dateInfoLabel);
 
         final Timer timer = new Timer(1000, event -> {
             refreshDateTimeInfo(timeInfoLabel, dateInfoLabel);
             refreshWeatherInfo(weatherCurrentOutsideTempInfoLabel);
-            refreshNewsFeederInfo(newsfeederInfoLabel);
+            refreshNewsFeederInfo(newsFeederInfoLabel);
         });
         timer.setRepeats(true);
         timer.setCoalesce(true);
@@ -119,7 +119,7 @@ class InfoAgendaController {
         for (int i = 0; i < news.size() && currentNewsCharacterStart < currentNewsStopPos; i++) {
             String newsArticle = news.get(i);
             for (int j = 0; j < newsArticle.length() && currentNewsCharacterStart < currentNewsStopPos; j++) {
-                if (currentNewsCharacterStart >= currentNewsStartPos && currentNewsCharacterStart < currentNewsStopPos) {
+                if (currentNewsCharacterStart >= currentNewsStartPos) {
                     currentNews.append(newsArticle.charAt(j));
                 }
                 currentNewsCharacterStart++;
@@ -127,7 +127,7 @@ class InfoAgendaController {
         }
 
         currentNewsStartPos += CURRENT_NEWS_DISPLAY_SPEED;
-        int maxNewsLength = news.stream().mapToInt(item -> item.length()).sum();
+        int maxNewsLength = news.stream().mapToInt(String::length).sum();
         if (currentNewsStartPos >= maxNewsLength) {
             currentNewsStartPos = 0;
         }
