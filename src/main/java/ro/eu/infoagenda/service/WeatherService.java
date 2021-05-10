@@ -17,7 +17,6 @@ public class WeatherService {
 
     public Info<String> getOutsideCurrentTemperature() throws IOException {
         InfoContent<String> infoContent = new InfoContent<>();
-
         infoContent.setContent(getLocalOutsideCurrentTemperature());
         return new Info<>(infoContent);
     }
