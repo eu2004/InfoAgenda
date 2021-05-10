@@ -1,22 +1,19 @@
 .root {
     -fx-background-color: black;
 }
-#dateInfoLabel {
-    -fx-font-size: 20;
-    -fx-text-fill: rgb(0,255,0);
-}
 
 #dateInfoLabel {
     -fx-font-size: 40px;
-    -fx-text-fill: rgb(0,255,0);
 }
 
 #timeInfoLabel {
     -fx-font-size: 160px;
-    -fx-text-fill: rgb(0,255,0);
 }
 
 #weatherCurrentOutsideTempInfoLabel {
     -fx-font-size: 40px;
-    -fx-text-fill: rgb(0,255,0);
+}
+
+#newsFeederInfoLabel {
+    -fx-font-size: 30px;
 }
