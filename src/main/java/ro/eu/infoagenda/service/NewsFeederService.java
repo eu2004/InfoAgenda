@@ -11,6 +11,7 @@ import ro.eu.infoagenda.model.InfoContent;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class NewsFeederService {
@@ -30,12 +31,17 @@ public class NewsFeederService {
                 if (localNewsCash.getValue() == null) {
                     Document doc = Jsoup.connect(NEWS_URL).get();
                     Elements articles = doc.select("li.article");
-                    List<String> newsArticles = new ArrayList<>();
-                    for (Element article : articles) {
-                        newsArticles.add(article.text());
+                    if (articles == null) {
+                        localNewsCash.setValue(Collections.emptyList());
+                        logger.error("set localNews failed! please check " + NEWS_URL);
+                    }else {
+                        List<String> newsArticles = new ArrayList<>();
+                        for (Element article : articles) {
+                            newsArticles.add(article.text());
+                        }
+                        localNewsCash.setValue(newsArticles);
+                        logger.info("set localNews " + localNewsCash);
                     }
-                    localNewsCash.setValue(newsArticles);
-                    logger.info("set localNews " + localNewsCash);
                 }
             }
         }

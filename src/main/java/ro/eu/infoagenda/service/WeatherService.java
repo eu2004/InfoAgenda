@@ -28,14 +28,21 @@ public class WeatherService {
                     Document doc = Jsoup.connect(CURRENT_LOCATION_ACCUWEATHER_URL).get();
                     Element root = doc.select("div.two-column-page-content")
                             .select("div.page-column-1")
-                            .select("div.content-module")
-                            .select("div.current-weather-card.card-module.content-module.non-ad")
+                            .select("div.page-content.content-module")
+                            .select("div.current-weather-card.card-module.content-module")
                             .select("div.card-content")
+                            .select("div.current-weather")
+                            .select("div.current-weather-info")
                             .select("div.temp")
                             .select("div.display-temp")
                             .first();
-                    localCurrentTemperature.setValue(root.text());
-                    logger.info("set localCurrentTemperature " + root.text());
+                    if (root == null) {
+                        localCurrentTemperature.setValue("Failed to load the temperature! Please check: " + CURRENT_LOCATION_ACCUWEATHER_URL);
+                        logger.error("set localCurrentTemperature failed! " + CURRENT_LOCATION_ACCUWEATHER_URL);
+                    }else {
+                        localCurrentTemperature.setValue(root.text());
+                        logger.info("set localCurrentTemperature " + root.text());
+                    }
                 }
             }
         }

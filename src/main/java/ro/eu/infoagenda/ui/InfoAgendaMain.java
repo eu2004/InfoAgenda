@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 public class InfoAgendaMain extends Application {
     private static final Logger logger = LogManager.getLogger(InfoAgendaMain.class);
-    private static final String VERSION = "1.2";
+    private static final String VERSION = "1.3";
     static {
         logger.info(String.format("Info agenda %s", VERSION));
     }
