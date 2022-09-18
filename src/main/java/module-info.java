@@ -7,4 +7,5 @@ module infoagenda {
     requires java.desktop;
 
     opens ro.eu.infoagenda.ui;
+    opens ro.eu.infoagenda.ui.javafx;
 }

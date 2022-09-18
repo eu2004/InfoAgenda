@@ -25,7 +25,7 @@ class LocalCash<T> {
                     + evictionPeriod
                     + " <= timeSinceLastCall:"
                     + timeSinceLastCall);
-            cashedValue = null;
+            resetCashedValue();
         }
         return cashedValue;
     }

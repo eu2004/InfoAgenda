@@ -1,7 +1,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
-<BorderPane fx:id="infoAgendaPane" fx:controller="ro.eu.infoagenda.ui.InfoAgendaController"
+<BorderPane fx:id="infoAgendaPane" fx:controller="ro.eu.infoagenda.ui.javafx.InfoAgendaController"
             xmlns:fx="http://javafx.com/fxml" stylesheets="/ro/eu/infoagenda/ui/infoagenda.css">
     <center>
         <GridPane>

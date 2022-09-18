@@ -2,7 +2,6 @@ package ro.eu.infoagenda.ui.swing;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ro.eu.infoagenda.service.DateInfoService;
 import ro.eu.infoagenda.service.NewsFeederService;
 import ro.eu.infoagenda.service.TimeInfoService;
 import ro.eu.infoagenda.service.WeatherService;
@@ -14,12 +13,11 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 class InfoAgendaController {
-    private static final Logger logger = LogManager.getLogger(ro.eu.infoagenda.ui.InfoAgendaController.class);
+    private static final Logger logger = LogManager.getLogger(ro.eu.infoagenda.ui.javafx.InfoAgendaController.class);
     private static final int MAX_CURRENT_NEWS_LENGTH = 100;
     private static final int CURRENT_NEWS_DISPLAY_SPEED = 5;
 
     private final TimeInfoService timeInfoService = new TimeInfoService();
-    private final DateInfoService dateInfoService = new DateInfoService();
     private final WeatherService weatherService = new WeatherService();
     private final NewsFeederService newsFeederService = new NewsFeederService();
 
@@ -51,10 +49,7 @@ class InfoAgendaController {
         frame.pack();
         frame.setVisible(true);
 
-        refreshUI(infoLabelsPanel.getTimeInfoLabel(),
-                infoLabelsPanel.getDateInfoLabel(),
-                infoLabelsPanel.getWeatherCurrentOutsideTempInfoLabel(),
-                infoLabelsPanel.getNewsFeederInfoLabel());
+        refreshUI(infoLabelsPanel);
     }
 
     private JFrame createFrame() {
@@ -70,12 +65,23 @@ class InfoAgendaController {
         return frame;
     }
 
-    private void refreshUI(JLabel timeInfoLabel, JLabel dateInfoLabel, JLabel weatherCurrentOutsideTempInfoLabel, JLabel newsFeederInfoLabel) {
-        refreshDateTimeInfo(timeInfoLabel, dateInfoLabel);
+    private void refreshUI(InfoLabelsPanel infoLabelsPanel) {
+        JLabel timeInfoLabel = infoLabelsPanel.getTimeInfoLabel();
+
+        JLabel weatherCurrentOutsideTempInfoLabel = infoLabelsPanel.getWeatherCurrentOutsideTempInfoLabel();
+        JLabel weatherRealFeelTemperatureInfoLabel = infoLabelsPanel.getWeatherRealFeelTemperatureInfoLabel();
+        JLabel weatherWindKmPerHInfoLabel = infoLabelsPanel.getWeatherWindKmPerHInfoLabel();
+        JLabel weatherOverAllLabel = infoLabelsPanel.getWeatherOverAllLabel();
+        JLabel weatherPressureLabel = infoLabelsPanel.getWeatherPressureLabel();
+
+        JLabel newsFeederInfoLabel = infoLabelsPanel.getNewsFeederInfoLabel();
+
+        refreshDateTimeInfo(timeInfoLabel);
 
         final Timer timer = new Timer(1000, event -> {
-            refreshDateTimeInfo(timeInfoLabel, dateInfoLabel);
-            refreshWeatherInfo(weatherCurrentOutsideTempInfoLabel);
+            refreshDateTimeInfo(timeInfoLabel);
+            refreshWeatherInfo(weatherCurrentOutsideTempInfoLabel, weatherRealFeelTemperatureInfoLabel,
+                    weatherWindKmPerHInfoLabel, weatherOverAllLabel, weatherPressureLabel);
             refreshNewsFeederInfo(newsFeederInfoLabel);
         });
         timer.setRepeats(true);
@@ -84,14 +90,18 @@ class InfoAgendaController {
         timer.start();
     }
 
-    private void refreshDateTimeInfo(JLabel timeInfoLabel, JLabel dateInfoLabel) {
+    private void refreshDateTimeInfo(JLabel timeInfoLabel) {
         timeInfoLabel.setText(timeInfoService.getCurrentTime().getInfo().getContent());
-        dateInfoLabel.setText(dateInfoService.getCurrentDate().getInfo().getContent());
     }
 
-    private void refreshWeatherInfo(JLabel weatherCurrentOutsideTempInfoLabel) {
+    private void refreshWeatherInfo(JLabel weatherCurrentOutsideTempInfoLabel, JLabel weatherRealFeelTemperatureInfoLabel,
+                                    JLabel weatherWindKmPerHInfoLabel, JLabel weatherOverAllLabel, JLabel weatherPressureLabel) {
         try {
-            weatherCurrentOutsideTempInfoLabel.setText(weatherService.getOutsideCurrentTemperature().getInfo().getContent() + " Outside");
+            weatherCurrentOutsideTempInfoLabel.setText(weatherService.getLocalWeatherInfo().getInfo().getContent().getLocalCurrentTemperature());
+            weatherRealFeelTemperatureInfoLabel.setText(weatherService.getLocalWeatherInfo().getInfo().getContent().getRealFeelTemperature());
+            weatherWindKmPerHInfoLabel.setText(weatherService.getLocalWeatherInfo().getInfo().getContent().getWindKmPerH());
+            weatherOverAllLabel.setText(weatherService.getLocalWeatherInfo().getInfo().getContent().getOverAll());
+            weatherPressureLabel.setText(weatherService.getLocalWeatherInfo().getInfo().getContent().getPreasure());
         } catch (IOException e) {
             logger.error(e);
         }

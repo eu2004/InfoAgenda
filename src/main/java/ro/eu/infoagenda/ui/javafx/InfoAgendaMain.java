@@ -1,4 +1,4 @@
-package ro.eu.infoagenda.ui;
+package ro.eu.infoagenda.ui.javafx;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

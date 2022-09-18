@@ -1,4 +1,4 @@
-package ro.eu.infoagenda.ui;
+package ro.eu.infoagenda.ui.javafx;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -11,10 +11,9 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ro.eu.infoagenda.service.DateInfoService;
-import ro.eu.infoagenda.service.NewsFeederService;
-import ro.eu.infoagenda.service.TimeInfoService;
-import ro.eu.infoagenda.service.WeatherService;
+import ro.eu.infoagenda.model.Info;
+import ro.eu.infoagenda.model.WeatherDetails;
+import ro.eu.infoagenda.service.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -119,7 +118,8 @@ public class InfoAgendaController implements Initializable {
         timeInfoLabel.setText(timeInfoService.getCurrentTime().getInfo().getContent());
 
         try {
-            weatherCurrentOutsideTempInfoLabel.setText(weatherService.getOutsideCurrentTemperature().getInfo().getContent() + " Outside");
+            Info<WeatherDetails> details = weatherService.getLocalWeatherInfo();
+            //TODO update it weatherCurrentOutsideTempInfoLabel.setText(weatherService.getOutsideCurrentTemperature().getInfo().getContent() + " Outside");
         } catch (IOException e) {
             logger.error(e);
         }
