@@ -8,3 +8,6 @@ pi@raspberrypi:~/apps/InfoAgenda $ java --module-path="dependencies-jars" --add-
 
 Run with swing (javafx hits CPU at 100%):
 java -cp InfoAgenda-1.0-SNAPSHOT-jar-with-dependencies.jar ro.eu.infoagenda.ui.swing.InfoAgendaMain
+
+
+/usr/lib/jvm/java-11-openjdk-armhf/bin/java -cp ./apps/InfoAgenda/InfoAgenda-1.4-SNAPSHOT-jar-with-dependencies.jar ro.eu.infoagenda.ui.swing.InfoAgendaMain

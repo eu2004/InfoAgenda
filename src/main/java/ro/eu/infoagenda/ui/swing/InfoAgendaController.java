@@ -10,7 +10,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 
 class InfoAgendaController {
     private static final Logger logger = LogManager.getLogger(ro.eu.infoagenda.ui.javafx.InfoAgendaController.class);
@@ -91,7 +90,11 @@ class InfoAgendaController {
     }
 
     private void refreshDateTimeInfo(JLabel timeInfoLabel) {
-        timeInfoLabel.setText(timeInfoService.getCurrentTime().getInfo().getContent());
+        try {
+            timeInfoLabel.setText(timeInfoService.getCurrentTime().getInfo().getContent());
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
     }
 
     private void refreshWeatherInfo(JLabel weatherCurrentOutsideTempInfoLabel, JLabel weatherRealFeelTemperatureInfoLabel,
@@ -102,8 +105,8 @@ class InfoAgendaController {
             weatherWindKmPerHInfoLabel.setText(weatherService.getLocalWeatherInfo().getInfo().getContent().getWindKmPerH());
             weatherOverAllLabel.setText(weatherService.getLocalWeatherInfo().getInfo().getContent().getOverAll());
             weatherPressureLabel.setText(weatherService.getLocalWeatherInfo().getInfo().getContent().getPreasure());
-        } catch (IOException e) {
-            logger.error(e);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
         }
     }
 
@@ -116,8 +119,8 @@ class InfoAgendaController {
             } else {
                 newsFeederInfoLabel.setText(loadNextNews(news));
             }
-        } catch (IOException e) {
-            logger.error(e);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
         }
     }
 

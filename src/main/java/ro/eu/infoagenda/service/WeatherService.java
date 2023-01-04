@@ -35,11 +35,11 @@ public class WeatherService {
     }
 
     private void setWeatherDetails() throws IOException {
-        String localCurrentTemperature = null;
-        String realFeelTemperature = null;
-        String windKmPerH = null;
-        String overAll = null;
-        String pressure = null;
+        String localCurrentTemperature;
+        String realFeelTemperature;
+        String windKmPerH;
+        String overAll;
+        String pressure;
 
         Document doc = Jsoup.connect(CURRENT_LOCATION_ACCUWEATHER_URL).get();
         Element root = getLocalCurrentTemperatureElement(doc);
@@ -62,20 +62,18 @@ public class WeatherService {
     }
 
     private Element getPressureElement(Document doc) {
-        Element root = doc.select("div.two-column-page-content")
+        return doc.select("div.two-column-page-content")
                 .select("div.page-column-1")
                 .select("div.page-content.content-module")
                 .select("div.current-weather-card.card-module.content-module")
                 .select("div.current-weather-details")
-                .select("div.right")
                 .select("div.detail-item.spaced-content")
-                .select("div")
-                .first();
-        return root;
+                .get(5)
+                .selectFirst("div");
     }
 
     private Element getOverAllElement(Document doc) {
-        Element root = doc.select("div.two-column-page-content")
+        return doc.select("div.two-column-page-content")
                 .select("div.page-column-1")
                 .select("div.page-content.content-module")
                 .select("div.current-weather-card.card-module.content-module")
@@ -83,24 +81,21 @@ public class WeatherService {
                 .select("div.current-weather")
                 .select("div.phrase")
                 .first();
-        return root;
     }
 
     private Element getWindKmPerHElement(Document doc) {
-        Element root = doc.select("div.two-column-page-content")
+        return doc.select("div.two-column-page-content")
                 .select("div.page-column-1")
                 .select("div.page-content.content-module")
                 .select("div.current-weather-card.card-module.content-module")
                 .select("div.current-weather-details")
-                .select("div.left")
                 .select("div.detail-item.spaced-content")
                 .get(1)
                 .selectFirst("div");
-        return root;
     }
 
     private Element getRealFeelTemperatureElement(Document doc) {
-        Element root = doc.select("div.two-column-page-content")
+        return doc.select("div.two-column-page-content")
                 .select("div.page-column-1")
                 .select("div.page-content.content-module")
                 .select("div.current-weather-card.card-module.content-module")
@@ -108,11 +103,10 @@ public class WeatherService {
                 .select("div.current-weather-extra")
                 .select("div.realfeel-shade-details")
                 .first();
-        return root;
     }
 
     private Element getLocalCurrentTemperatureElement(Document doc) {
-        Element root = doc.select("div.two-column-page-content")
+        return doc.select("div.two-column-page-content")
                 .select("div.page-column-1")
                 .select("div.page-content.content-module")
                 .select("div.current-weather-card.card-module.content-module")
@@ -122,7 +116,6 @@ public class WeatherService {
                 .select("div.temp")
                 .select("div.display-temp")
                 .first();
-        return root;
     }
 
     private WeatherDetails createLocalWeather(String localCurrentTemperature, String realFeelTemperature, String windKmPerH, String overAll, String pressure) {
